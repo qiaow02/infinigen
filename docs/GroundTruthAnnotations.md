@@ -12,7 +12,7 @@
 
 Infinigen can produce some dense annotations using Blender's built-in render passes. Users may prefer to use these annotations over our extended annotation system's since it requires only the bare-minimum installation. It is also able to run without a GPU.
 
-These annotations are produced when using the `--pipeline_configs blender_gt` ground truth extraction config in [manage_datagen_jobs.py](/README.md#generate-images-in-one-command), or can be done manually as shown in the final step of the [Hello-World](/README.md#generate-a-scene-step-by-step) example.
+These annotations are produced when using the `--pipeline_configs blender_gt` ground truth extraction config in [manage_jobs.py](/README.md#generate-images-in-one-command), or can be done manually as shown in the final step of the [Hello-World](/README.md#generate-a-scene-step-by-step) example.
 
 ## Advanced Annotation Pipeline :large_blue_diamond:
 
@@ -51,13 +51,9 @@ If you do not have sudo access, you may attempt the following:
 - Install dependencies manually and set your $CPATH variables appropriately. 
 - Ask your administrator to install them on your behalf (YMMV).
 
-Finally, run
+Finally, run the following:
 ```
-bash install.sh opengl
-```
-Or, if you have already run `install.sh` earlier, you can just run
-```
-bash worldgen/tools/install/compile_opengl.sh
+bash scripts/install/compile_opengl.sh
 ```
 
 ### Extended Hello-World
@@ -65,7 +61,7 @@ bash worldgen/tools/install/compile_opengl.sh
 To generate the hello-world scene using our custom annotation system, run:
 
 ```
-python -m tools.manage_datagen_jobs --output_folder outputs/hello_world/0 --num_scenes 1 --specific_seed 0 \
+python -m infinigen.datagen.manage_jobs --output_folder outputs/hello_world/0 --num_scenes 1 --specific_seed 0 \
 --configs desert.gin simple.gin --pipeline_configs local_16GB.gin monocular.gin opengl_gt.gin --pipeline_overrides LocalScheduleHandler.use_gpu=False
 ```
 This is the [the previous manage_datagen_jobs command](https://github.com/princeton-vl/infinigen_internal/blob/oc16_update_docs/docs/HelloWorld.md#generate-images-in-one-command), but replacing `blender_gt.gin` with `opengl_gt.gin`
@@ -86,7 +82,7 @@ Depth is stored as a 2H x 2W 32-bit floating point numpy array.
 
 The depth and camera parameters can be used to warp one image to another frame by running:
 ```
-python -m tools.ground_truth.rigid_warp <folder> <first-frame> <second-frame>
+python -m infinigen.tools.ground_truth.rigid_warp <folder> <first-frame> <second-frame>
 ```
 
 **Surface Normals**
@@ -122,7 +118,7 @@ Channel 3 is the depth change between this frame and the next.
 To see an example of how optical flow can be used to warp one frame to the next, run
 
 ```
-python -m tools.ground_truth.optical_flow_warp <folder> <frame-number>
+python -m infinigen.tools.ground_truth.optical_flow_warp <folder> <frame-number>
 ```
 
 If using `blender_gt.gin` rathern than `opengl_gt.gin` replace `Flow3D` with `Flow`, since Blender does not export 3D flow.

@@ -17,32 +17,31 @@ Infinigen generates scenes by running multiple tasks (usually executed automatic
 :exclamation: If you encounter any missing .so files, missing dependencies (such as `gin`), or similar crashes, please check again that all steps of installation ran successfully. If you cannot resolve any issues with installation, please see our README and 'Bug Report' Git Issue template for advice on posting Git Issues to get help quickly - you must include the full installation logs in your issue so that we can help debug.
 
 ```
-cd worldgen
 mkdir outputs
 
 # Generate a scene layout
-$BLENDER -noaudio --background --python generate.py -- --seed 0 --task coarse -g desert.gin simple.gin --output_folder outputs/hello_world/coarse
+python -m infinigen_examples.generate_nature --seed 0 --task coarse -g desert.gin simple.gin --output_folder outputs/hello_world/coarse
 
 # Populate unique assets
-$BLENDER -noaudio --background --python generate.py -- --seed 0 --task populate fine_terrain -g desert.gin simple.gin --input_folder outputs/hello_world/coarse --output_folder outputs/hello_world/fine
+python -m infinigen_examples.generate_nature --seed 0 --task populate fine_terrain -g desert.gin simple.gin --input_folder outputs/hello_world/coarse --output_folder outputs/hello_world/fine
 
 # Render RGB images
-$BLENDER -noaudio --background --python generate.py -- --seed 0 --task render -g desert.gin simple.gin --input_folder outputs/hello_world/fine --output_folder outputs/hello_world/frames
+python -m infinigen_examples.generate_nature --seed 0 --task render -g desert.gin simple.gin --input_folder outputs/hello_world/fine --output_folder outputs/hello_world/frames
 
 # Render again for accurate ground-truth
-$BLENDER -noaudio --background --python generate.py -- --seed 0 --task render -g desert.gin simple.gin --input_folder outputs/hello_world/fine --output_folder outputs/hello_world/frames -p render.render_image_func=@flat/render_image 
+python -m infinigen_examples.generate_nature --seed 0 --task render -g desert.gin simple.gin --input_folder outputs/hello_world/fine --output_folder outputs/hello_world/frames -p render.render_image_func=@flat/render_image 
 ```
 
-:warning: If you recieve the error message `-noaudio: command not found` you most likely missed the `export BLENDER=...` step of the Installation instructions.
+:warning: If you installed Infinigen using the "Infinigen as a Blender Python script" option, you will need to replace `python -m infinigen_examples.generate_nature` with `python -m infinigen.launch_blender -m infinigen_examples.generate_nature -- ` in the commands above, e.g. the first command would become `python -m infinigen.launch_blender -m infinigen_examples.generate_nature -- --seed 0 --task coarse -g desert.gin simple.gin --output_folder outputs/hello_world/coarse`. 
 
-Output logs should indicate what the code is working on. Use `--debug` for even more detail. After each command completes you can inspect it's `--output_folder` for results, including running `$BLENDER outputs/hello_world/coarse/scene.blend` or similar to view blender files. We hide many meshes by default for viewport stability; to view them, click "Render" or use the UI to unhide them.
+Output logs should indicate what the code is working on. Use `--debug` for even more detail. After each command completes you can inspect it's `--output_folder` for results, including running `python -m infinigen.launch_blender outputs/hello_world/coarse/scene.blend` or similar to view blender files. We hide many meshes by default for viewport stability; to view them, click "Render" or use the UI to unhide them.
 
 ## Generate image(s) in one command
 
-We provide `tools/manage_datagen_jobs.py`, a utility which runs similar steps automatically.
+We provide `infinigen/datagen/manage_jobs.py`, a utility which runs similar steps automatically.
 
 ```
-python -m tools.manage_datagen_jobs --output_folder outputs/hello_world --num_scenes 1 --specific_seed 0 \
+python -m infinigen.datagen.manage_jobs --output_folder outputs/hello_world --num_scenes 1 --specific_seed 0 \
 --configs desert.gin simple.gin --pipeline_configs local_16GB.gin monocular.gin blender_gt.gin --pipeline_overrides LocalScheduleHandler.use_gpu=False
 ```
 

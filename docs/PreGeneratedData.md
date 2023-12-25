@@ -9,19 +9,18 @@ Please run the script below, which will prompt you to determine what ground trut
 
 ```bash
 cd worldgen
-python tools/download_pregenerated_data.py outputs/my_download --release_name 2023_10_13_preview
+python -m infinigen.tools.download_pregenerated_data outputs/my_download --release_name 2023_10_13_preview
 ```
 
 :warning: Downloading all available annotations will require ~30GB per scene. Selecting only the data you need will minimize your bandwidth and disk usage.
 
 ## Using Infinigen data with a Pytorch-style dataset class
 
-We provide an example pytorch-style dataset class ([dataset_loader.py](../worldgen/tools)) to help load data in our format. 
+We provide an example pytorch-style dataset class ([dataset_loader.py](../infinigen/tools)) to help load data in our format. 
 
-If you create a python script in the `worldgen/` folder, you can use the following snippet to load your downloaded data. You may need to replace `outputs/my_download` and `data_types` with the values used during download. 
-
-```python
-from tools.dataset_loader import get_infinigen_dataset
+If you create a python script in the root of the repo, you can use the following snippet to load your downloaded data. You may need to replace `outputs/my_download` and `data_types` with the values used during download. 
+python
+from infinigen.tools.dataset_loader import get_infinigen_dataset
 dataset = get_infinigen_dataset("outputs/my_download", data_types=["Image_png", "Depth_npy"])
 print(len(dataset))
 print(dataset[0].keys())

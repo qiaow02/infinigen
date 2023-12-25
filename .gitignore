@@ -1,8 +1,11 @@
-Python-3.10.2
-Python-3.10.2.tgz
+Python-*
+Python-*.tgz
 blender
 blender.tar.xz
 Blender.app
+
+.coverage
+coverage.xml
 
 */rclone.zip
 */miniconda.sh
@@ -15,7 +18,6 @@ slurm-*.out
 __pycache__
 *.blend
 *.blend1
-*/worldgen/terrain/gen_occlusions/dependencies/*
 *.obj
 *.DS_Store
 **._.DS_Store
@@ -38,7 +40,6 @@ Blender-FLIP-Fluids
 *.obj
 *.blend
 *.blend1
-*.in
 *.out
 profiles_*.npz
 *outputs
@@ -63,3 +64,6 @@ dist
 build
 blends
 *.ipynb_checkpoints
+
+process_mesh
+worldgen

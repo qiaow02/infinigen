@@ -15,3 +15,11 @@ v1.0.4
 - Reformat "frames" folder to be more intuitive / easier to dataload
 - ground truth updates
 - render throughput improvements
+
+v1.1.0
+- Update to blender 3.6, install blender either via pip or standalone
+- Restructure project into an `infinigen` python package and `infinigen_examples` directory
+- Add unit tests
+
+v1.2.0
+- Integrate OcMesher terrain option - see https://github.com/princeton-vl/OcMesher
